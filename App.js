@@ -1,30 +1,60 @@
 import { StatusBar } from 'expo-status-bar';
-import { SafeAreaView, StyleSheet, Text, View, ImageBackground, Image, TextInput, TouchableOpacity } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View, ImageBackground, Image, TextInput, TouchableOpacity, Pressable, Alert} from 'react-native';
 import { useState } from 'react';
 
 export default function App() {
   const fondo = require('./assets/image-background.png');
   const fotoPerfil = require('./assets/foto-perfil.png');
-  const[mensaje, handleMensajeChange] = useState('')
-  const handleEnviar = () => {
-    alert = (mensaje) => {}
+  const fondoAlternativo1 = require('./assets/fondo-alternativo1.png');
+  const fondoAlternativo2 = require('./assets/fondo-alternativo2.png');
+  const fondoAlternativo3 = require('./assets/fondo-alternativo3.png');
 
-  }
- 
+  const [mensaje, handleMensajeChange] = useState('');
+  const [fondoActual, setFondoActual] = useState(fondo);
+  const [opacidad, setOpacidad] = useState(1);
+
+  const handleEnviar = () => {
+    Alert.alert("Mensaje enviado", mensaje);
+  };
+
+  const cambiarFondo = () => {
+    const fondos = [fondo, fondoAlternativo1, fondoAlternativo2, fondoAlternativo3];
+    const nuevoFondo = fondos[Math.floor(Math.random() * fondos.length)];    //FUNCIÓN BÁSICA EXTRAÍDA DE LA WEB
+    setFondoActual(nuevoFondo);
+  };
+
+  const mostrarInfoPerfil = () => {
+    setTimeout(() => {
+      Alert.alert("Información del perfil", "Uriel Matías Smucler, 17 años, Programador, Estudiante de Informática en ORT.");
+    }, 500);
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <StatusBar color="#0164a5" backgroundColor="#eeda9d" />
+      <StatusBar style="dark" backgroundColor="#eeda9d" />
       
-      <ImageBackground source={fondo} resizeMode="cover" style={styles.backgroundImage}>
+      <ImageBackground source={fondoActual} resizeMode="cover" style={styles.backgroundImage}>
         <View style={styles.container1}>
-          <Image source={fotoPerfil} style={styles.profileImage} />
+          <Pressable
+            onPress={cambiarFondo}
+            onPressIn={() => setOpacidad(0.5)}
+            onPressOut={() => setOpacidad(1)}
+            onLongPress={mostrarInfoPerfil} 
+          >
+            <Image source={fotoPerfil} style={[styles.profileImage, { opacity: opacidad }]} />
+          </Pressable>
           <Text style={styles.titleText}>Uriel Matías Smucler</Text>
           <Text style={styles.subtitleText}>Estudiante de Informática en ORT</Text>
         </View>
         <View style={styles.container2}>
-          <TextInput style={styles.input} placeholder='Ingrese un mensaje' onChangeText={handleMensajeChange} value={mensaje} ></TextInput>
-          <TouchableOpacity onPress={handleEnviar}>
-            <Text>Enviar Mensaje</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Ingrese un mensaje"
+            onChangeText={handleMensajeChange}
+            value={mensaje}
+          />
+          <TouchableOpacity style={styles.button} onPress={handleEnviar}>
+            <Text style={styles.buttonText}>Enviar Mensaje</Text>
           </TouchableOpacity>
         </View>
       </ImageBackground>
@@ -49,9 +79,6 @@ const styles = StyleSheet.create({
     opacity: 0.8,
   },
   profileImage: {
-    position: 'absolute',
-    top: 20,
-    right: 20,
     width: 100,
     height: 100,
     borderRadius: 50,
@@ -62,22 +89,34 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: 'bold',
     color: 'white',
+    fontFamily: 'Arial',
   },
   subtitleText: {
     fontSize: 20,
     fontWeight: '600',
     color: 'white',
+    fontFamily: 'Courier New',
+  },
+  input: {
+    width: '80%',
+    padding: 10,
+    backgroundColor: '#ffffff',
+    borderRadius: 5,
+    marginBottom: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
+  },
+  button: {
+    backgroundColor: '#0164a5',
+    padding: 10,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 
 //COSAS POR CORREGIR:
-//1: Que title y subtitle tengan diferente font family
-//2: STATUS BAR CON FONDO #eeda9d y letra #0164a5 --> el color de la letra no funciona
-//3: La foto de perfil está levemente encimada con el status bar
-//4: Que "container2" sea un estilo diferente a 1
-//5: Hacer que el Alert de HandleEnviar funcione
-//6: Convertir la foto en un pressable que:
-  //A: Al presionar 1 vez cambie el fondo (entre 3 opciones de imágen)
-  //B: on500ms press --> muestra más info del perfil
-  //C: Se opaque la imágen mientras se aprieta
-//7: Ponerle color, fondo, y estilo al input y enviar
+//1: 
