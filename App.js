@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView, StyleSheet, Text, View, ImageBackground, Image, TextInput, TouchableOpacity, Pressable, Alert} from 'react-native';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import * as SplashScreen from 'expo-splash-screen';
 
 export default function App() {
   const fondo = require('./assets/image-background.png');
@@ -28,6 +29,17 @@ export default function App() {
       Alert.alert("Información del perfil", "Uriel Matías Smucler, 17 años, Programador, Estudiante de Informática en ORT.");
     }, 500);
   };
+
+  useEffect(() => {
+    const prepare = async () => {
+      await SplashScreen.preventAutoHideAsync();
+      setTimeout(() => {
+        SplashScreen.hideAsync();
+      }, 2000)
+    };
+
+    prepare();
+  }, []);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
