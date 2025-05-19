@@ -16,6 +16,7 @@ export default function App() {
 
   const handleEnviar = () => {
     Alert.alert("Mensaje enviado", mensaje);
+    handleMensajeChange('');
   };
 
   const cambiarFondo = () => {
@@ -29,17 +30,6 @@ export default function App() {
       Alert.alert("Información del perfil", "Uriel Matías Smucler, 17 años, Programador, Estudiante de Informática en ORT.");
     }, 500);
   };
-
-  useEffect(() => {
-    const prepare = async () => {
-      await SplashScreen.preventAutoHideAsync();
-      setTimeout(() => {
-        SplashScreen.hideAsync();
-      }, 2000)
-    };
-
-    prepare();
-  }, []);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -129,6 +119,3 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-
-//COSAS POR CORREGIR:
-//1: 
